@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор випадкових чисел</title>
+    <link rel="stylesheet" href="/styles/reset.css">
+    <link rel="stylesheet" href="/styles/generator.css">
+    <script defer src="/scripts/generator.js"></script>
+</head>
+
+<body>
+    <main class="window">
+        <div>
+            <h3>Генератор випадкових чисел</h3>
+            <div>
+                <div>
+                    <div></div>
+                </div>
+                <div>
+                    <div></div>
+                </div>
+                <div>
+                    <span>
+                        &#9587;
+                    </span>
+                </div>
+            </div>
+        </div>
+        <section class="generator">
+            <h1>Генератор випадкових чисел</h1>
+            <div>
+                <label>
+                    Кількість чисел для генерації:
+                    <input name="amount" type="number" value="1" min="1">
+                </label>
+                <label>
+                    Тільки унікальні значення:
+                    <input name="unique" type="checkbox">
+                </label>
+            </div>
+            <div>
+                <label>
+                    Мінімальне число:
+                    <input name="min" type="number" value="0">
+                </label>
+                <label>
+                    Включати мінімальне число:
+                    <input name="minInclude" type="checkbox" checked>
+                </label>
+            </div>
+            <div>
+                <label>
+                    Максимальне число:
+                    <input name="max" type="number" value="10">
+                </label>
+                <label>
+                    Включати максимальне число:
+                    <input name="maxInclude" type="checkbox" checked>
+                </label>
+            </div>
+            <button id="get">
+                Згенерувати
+            </button>
+            <label>
+                Сортувати в порядку зростання:
+                <input name="sort" type="checkbox">
+            </label>
+            <div>
+                <h2>
+                    Результат:
+                </h2>
+                <div id="results">
+                    Натисніть кнопку "Згенерувати", щоб згенерувати випадкові числа
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>

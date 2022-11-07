@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хто хоче стати мільйонером? | Головне меню</title>
+    <link rel="stylesheet" href="/styles/reset.css">
+    <link rel="stylesheet" href="/styles/millionaire.css">
+</head>
+
+<body>
+    <main class="game-start">
+        <h1>Хто хоче стати мільйонером?</h1>
+        <img src="/images/logo.png" alt="Logo">
+        <div class="control">
+            <div class="control-main">
+                <button id="start">
+                    Нова гра
+                </button>
+                <button id="continue">
+                    Продовжити гру
+                </button>
+            </div>
+            <div class="control-additional">
+                <h2>
+                    Почати гру з питання:
+                </h2>
+                <div>
+                </div>
+            </div>
+            <div class="sound-control">
+                <button data-on="false">
+                    <img src="">
+                </button>
+            </div>
+        </div>
+    </main>
+    <script>
+        let startMusic = new Audio('/audio/start.mp3');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            let soundOn = soundIsOn();
+
+            function soundIsOn() {
+                let soundIcon = document.querySelector('.sound-control button img');
+                if (!localStorage.sound || localStorage.sound == 'false') {
+                    localStorage.setItem('sound', 'false');
+                    soundIcon.src = '/images/sound-off.svg';
+                    return false;
+                } else if (localStorage.sound == 'true') {
+                    soundIcon.src = '/images/sound.svg';
+                    return true;
+                }
+            }
+
+            let questionsButtons = document.querySelector('.control-additional > div');
+
+            for (let i = 0; i < 15; i++) {
+                let item = document.createElement('button');
+                item.innerText = i + 1;
+                item.setAttribute('data-initial-question', i + 1);
+                questionsButtons.append(item);
+            }
+
+            document.querySelectorAll('[data-initial-question]').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    localStorage.setItem('current', e.target.dataset.initialQuestion - 1);
+                    localStorage.setItem('hint50on50', 'false');
+                    localStorage.setItem('hintCall', 'false');
+                    localStorage.setItem('hintAudience', 'false');
+                    window.location.pathname = 'millionaire.html';
+                });
+            });
+
+            document.querySelector('#start').addEventListener('click', () => {
+                localStorage.setItem('current', '0');
+                localStorage.setItem('hint50on50', 'false');
+                localStorage.setItem('hintCall', 'false');
+                localStorage.setItem('hintAudience', 'false');
+                window.location.pathname = 'millionaire.html';
+            });
+
+            document.querySelector('#continue').addEventListener('click', () => {
+                window.location.pathname = 'millionaire.html';
+            });
+
+            document.querySelector('.sound-control button').addEventListener('click', () => {
+                let soundIcon = document.querySelector('.sound-control button img');
+                if (soundOn) {
+                    soundOn = false;
+                    localStorage.setItem('sound', 'false');
+                    soundIcon.src = '/images/sound-off.svg';
+                    stopSound();
+                } else {
+                    soundOn = true;
+                    localStorage.setItem('sound', 'true');
+                    soundIcon.src = '/images/sound.svg';
+                    playSound();
+                }
+            });
+
+            document.addEventListener('click', function startMusicOnClick() {
+                if (soundOn) {
+                    playSound();
+                }
+                document.removeEventListener('click', startMusicOnClick);
+            });
+
+            function playSound() {
+                startMusic.currentTime = 0;
+                startMusic.play();
+            }
+
+            function stopSound() {
+                startMusic.pause();
+                startMusic.currentTime = 0;
+            }
+        });
+    </script>
+</body>
+
+</html>

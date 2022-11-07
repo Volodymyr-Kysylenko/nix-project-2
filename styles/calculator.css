@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+@font-face {
+    font-family: "Digital";
+    src: url("/fonts/digital.ttf");
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #d5d5d5;
+    font-family: "Montserrat", sans-serif;
+    color: #fff;
+}
+
+.calculator {
+    width: 480px;
+    padding: 24px 32px 32px 32px;
+    background-color: #222222;
+    border-radius: 8px;
+    box-shadow: 8px 8px 20px 10px #0000002b;
+}
+
+.header {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.header h1 {
+    margin-bottom: 18px;
+    font-size: 18px;
+}
+
+.header h1 span {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.header h2 {
+    margin-bottom: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.solar-panel {
+    display: flex;
+    flex-flow: row nowrap;
+    height: 30px;
+    border: 2px solid #222222;
+    border-right: unset;
+    background-color: #37384a;
+}
+
+.solar-panel div {
+    height: 100%;
+    width: 30px;
+    border-right: 2px solid #222222;
+}
+
+.screen {
+    height: 90px;
+    width: 100%;
+    padding: 12px 18px;
+    margin: 0 0 32px 0;
+    background-color: #556f5c;
+    text-align: right;
+    font-family: "Digital";
+    color: #000;
+}
+
+[data-history] {
+    height: 24px;
+    filter: opacity(.6);
+    font-size: 24px;
+}
+
+[data-display] {
+    margin: 8px 0 0;
+    font-size: 42px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    justify-items: center;
+    row-gap: 12px;
+    column-gap: 12px;
+}
+
+.buttons div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    border: 0.5px solid #5c5c5c23;
+    border-radius: 4px;
+    background-color: #b1b1b1;
+    font-size: 20px;
+    font-weight: 600;
+    color: #181818;
+    cursor: pointer;
+    user-select: none;
+}
+
+.buttons div:hover {
+    background-color: rgb(138, 138, 138);
+}
+
+div[data-operator],
+div[data-equal] {
+    background-color: #3c3c3c;
+    color: #fefefe;
+}
+
+div[data-operator]:hover,
+div[data-equal]:hover {
+    background-color: #494949;
+}
+
+div[data-clear-all],
+div[data-clear-input] {
+    background-color: #fa7f3c;
+    color: #181818;
+}
+
+div[data-clear-all]:hover,
+div[data-clear-input]:hover {
+    background-color: #ff6d1f;
+}
