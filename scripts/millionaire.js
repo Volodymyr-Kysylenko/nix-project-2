@@ -232,7 +232,7 @@ function hintAudience() {
         if (answersIndexes) {
             if (hintAnswer > 2) {
                 showPopupHint('Аудиторія проголосувала за відповідь ', hintAnswerLetters[answersIndexes[0]]);
-                document.querySelectorAll('.answers button')[answersIndexes[1]].classList.add('audience-answer');
+                document.querySelectorAll('.answers button')[answersIndexes[0]].classList.add('audience-answer');
             } else {
                 showPopupHint('Аудиторія проголосувала за відповідь ', hintAnswerLetters[answersIndexes[1]]);
                 document.querySelectorAll('.answers button')[answersIndexes[1]].classList.add('audience-answer');
