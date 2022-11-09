@@ -231,7 +231,6 @@ function hintAudience() {
 
         if (answersIndexes) {
             if (hintAnswer > 2) {
-                alert(answersIndexes[0]);
                 showPopupHint('Аудиторія проголосувала за відповідь ', hintAnswerLetters[answersIndexes[0]]);
                 document.querySelectorAll('.answers button')[answersIndexes[0]].classList.add('audience-answer');
             } else {
