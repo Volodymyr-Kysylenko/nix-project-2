@@ -231,6 +231,7 @@ function hintAudience() {
 
         if (answersIndexes) {
             if (hintAnswer > 2) {
+                alert(answersIndexes[0]);
                 showPopupHint('Аудиторія проголосувала за відповідь ', hintAnswerLetters[answersIndexes[0]]);
                 document.querySelectorAll('.answers button')[answersIndexes[0]].classList.add('audience-answer');
             } else {
@@ -248,12 +249,15 @@ function allButtonsDisabled() {
     document.querySelectorAll('.game button').forEach((item) => {
         item.disabled = true;
     });
+    document.querySelector('.exit').disabled = true;
 }
 
 function allButtonsEnabled() {
     document.querySelectorAll('.game button').forEach((item) => {
         item.disabled = false;
     });
+
+    document.querySelector('.exit').disabled = false;
 
     hint50on50Used = getCurrentHintStatus('hint50on50');
     hintCallUsed = getCurrentHintStatus('hintCall');
