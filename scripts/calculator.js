@@ -76,6 +76,10 @@ numbers.forEach((number) => {
     number.addEventListener('click', (event) => {
         let value = event.target.dataset.number;
 
+        if (currentNumber.toString().length > 18) {
+            return;
+        }
+
         if (value == '.') {
             if (isDecimal) return;
             isDecimal = true;

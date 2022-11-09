@@ -90,6 +90,15 @@ let correctAudio = new Audio('/audio/win.ogg');
 
 let soundOn = soundIsOn();
 
+let images = [
+    '/images/add-frame-hover.svg',
+    '/images/add-frame-select.svg',
+    '/images/add-frame-correct.svg',
+    '/images/add-frame-wrong.svg'
+];
+
+let answersIndexes;
+
 document.addEventListener('DOMContentLoaded', () => {
     showQuestion(current);
     document.querySelector('#hint50on50').addEventListener('click', hint50on50);
@@ -97,7 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#hintAudience').addEventListener('click', hintAudience);
     document.querySelectorAll('.answers button').forEach((item) => {
         item.addEventListener('click', (e) => answer(e.currentTarget));
-    })
+    });
+    document.querySelector('.exit').addEventListener('click', exit);
+    images.forEach(item => {
+        let image = new Image();
+        image.src = item;
+    });
 });
 
 document.querySelector('.sound-control button').addEventListener('click', () => {
@@ -155,10 +169,10 @@ function hint50on50() {
         document.querySelector('#hint50on50').disabled = true;
         hint50on50Used = true;
         localStorage.hint50on50 = 'true';
-        
-        let answersIndexes = [questions[current].correct];
-        
-        for (let i = 0; i < 2;) {
+
+        answersIndexes = [questions[current].correct];
+
+        for (let i = 0; i < 1;) {
             let item = Math.floor(Math.random() * 4);
             if (!answersIndexes.includes(item)) {
                 answersIndexes.push(item);
@@ -188,10 +202,15 @@ function hintCall() {
         let hintAnswerLetters = ['A', 'B', 'C', 'D'];
 
         if (Math.random() > 0.8) {
-            showPopupHint('Я думаю що правильна відповідь ', hintAnswerLetters[hintAnswer]);          
-            document.querySelectorAll('.answers button')[hintAnswer].classList.add('friend-answer');
+            if (answersIndexes) {
+                showPopupHint('Я думаю що правильна відповідь ', hintAnswerLetters[answersIndexes[1]]);
+                document.querySelectorAll('.answers button')[answersIndexes[1]].classList.add('friend-answer');
+            } else {
+                showPopupHint('Я думаю що правильна відповідь ', hintAnswerLetters[hintAnswer]);
+                document.querySelectorAll('.answers button')[hintAnswer].classList.add('friend-answer');
+            }
         } else {
-            showPopupHint('Я думаю що правильна відповідь ', hintAnswerLetters[questions[current].correct]);            
+            showPopupHint('Я думаю що правильна відповідь ', hintAnswerLetters[questions[current].correct]);
             document.querySelectorAll('.answers button')[questions[current].correct].classList.add('friend-answer');
         }
     }
@@ -210,8 +229,18 @@ function hintAudience() {
         let hintAnswer = Math.floor(Math.random() * 4);
         let hintAnswerLetters = ['A', 'B', 'C', 'D'];
 
-        showPopupHint('Аудиторія проголосувала за відповідь ', hintAnswerLetters[hintAnswer]);
-        document.querySelectorAll('.answers button')[hintAnswer].classList.add('audience-answer');
+        if (answersIndexes) {
+            if (hintAnswer > 2) {
+                showPopupHint('Аудиторія проголосувала за відповідь ', hintAnswerLetters[answersIndexes[0]]);
+                document.querySelectorAll('.answers button')[answersIndexes[1]].classList.add('audience-answer');
+            } else {
+                showPopupHint('Аудиторія проголосувала за відповідь ', hintAnswerLetters[answersIndexes[1]]);
+                document.querySelectorAll('.answers button')[answersIndexes[1]].classList.add('audience-answer');
+            }
+        } else {
+            showPopupHint('Аудиторія проголосувала за відповідь ', hintAnswerLetters[hintAnswer]);
+            document.querySelectorAll('.answers button')[hintAnswer].classList.add('audience-answer');
+        }
     }
 }
 
@@ -267,7 +296,7 @@ function wrongAnswer() {
 
     localStorage.setItem('current', 0);
     showPopupWrongAnswer();
-    
+
     localStorage.hint50on50 = false;
     localStorage.hintCall = false;
     localStorage.hintAudience = false;
@@ -315,6 +344,12 @@ function showQuestion(id) {
     document.querySelector(`.levels li[data-id="${id + 1}"`).classList.add('active-level');
 
     showWinnings(id);
+
+    if (current > 0) {
+        document.querySelector('.exit').disabled = false;
+    } else {
+        document.querySelector('.exit').disabled = true;
+    }
 }
 
 function showWinnings(id) {
@@ -384,25 +419,25 @@ function showPopupCorrectAnswer() {
     document.body.append(container);
 }
 
-function showWinPopup() {
+function showWinPopup(text = 'Ви виграли 1 мільйон гривень!') {
     document.querySelector('.winnings span').innerHTML = '1000000' + ' гривень';
     let startAgainButton = document.createElement('button');
     startAgainButton.innerText = 'Почати заново';
     startAgainButton.addEventListener('click', () => {
-    
+
         localStorage.hint50on50 = false;
         localStorage.hintCall = false;
         localStorage.hintAudience = false;
-    
+
         hint50on50Used = getCurrentHintStatus('hint50on50');
         hintCallUsed = getCurrentHintStatus('hintCall');
         hintAudienceUsed = getCurrentHintStatus('hintAudience');
-        
+
         current = 0;
         localStorage.setItem('current', 0);
 
         deletePopup();
-        });
+    });
 
     let toMenuButton = document.createElement('button');
     toMenuButton.innerText = 'Перейти в меню';
@@ -415,7 +450,7 @@ function showWinPopup() {
     buttonContainers.append(toMenuButton);
 
     let message = document.createElement('p');
-    message.innerText = 'Ви виграли 1 мільйон гривень!';
+    message.innerText = text;
     message.style.color = '#ffa500';
     message.style.fontSize = '36px';
     message.style.fontWeight = 'bold';
@@ -461,6 +496,8 @@ function deletePopup() {
     document.querySelector('.container').remove();
     showQuestion(current);
     stopSound();
+
+    answersIndexes = undefined;
 }
 
 function stopSound() {
@@ -472,4 +509,45 @@ function stopSound() {
 
     correctAudio.pause();
     correctAudio.currentTime = 0;
+}
+
+function exit() {
+    let amount = document.querySelector(`.levels li[data-id="${current}"] span`).textContent;
+
+    let noButton = document.createElement('button');
+    noButton.innerText = 'Ні';
+    noButton.addEventListener('click', () => {
+        document.querySelectorAll('.answers button').forEach((item, index) => {
+            item.style.backgroundImage = '';
+        });
+        document.querySelector('.container').remove();
+    });
+
+    let yesButton = document.createElement('button');
+    yesButton.innerText = 'Так';
+    yesButton.addEventListener('click', () => {
+        document.querySelectorAll('.answers button').forEach((item, index) => {
+            item.style.backgroundImage = '';
+        });
+        document.querySelector('.container').remove();
+        showWinPopup(text = 'Ви виграли ' + amount + ' гривень!');
+    });
+
+    let buttonContainers = document.createElement('div');
+    buttonContainers.append(noButton);
+    buttonContainers.append(yesButton);
+
+    let message = document.createElement('p');
+    message.innerText = 'Ви дійсно хочете забрати ' + amount + ' гривень та залишти гру?';
+
+    let popup = document.createElement('div');
+    popup.classList.add('popup');
+    popup.append(message);
+    popup.append(buttonContainers);
+
+    let container = document.createElement('div');
+    container.classList.add('container');
+    container.append(popup);
+
+    document.body.append(container);
 }

@@ -4,14 +4,12 @@ document.querySelectorAll('input').forEach((input) => {
     })
 });
 
-
 document.querySelector('[name="amount"]').addEventListener('blur', function () {
     let amount = this.value;
     if (amount < 0) {
         document.querySelector('[name="amount"]').value = '1';
     }
 })
-
 
 document.querySelector('#get').addEventListener('click', () => {
     let amount = parseInt(document.querySelector('[name="amount"]').value);
@@ -33,7 +31,7 @@ document.querySelector('#get').addEventListener('click', () => {
 
     if (minInclude && maxInclude) {
         if ((amount > (max - min) + 1) && unique) {
-            alert('Унікальних значень не може бути більше ніж чисел в діапазоні!')
+            showPopup();
         } else {
             if (sort) {
                 results.innerHTML = getNumbers(amount, min, max, unique).sort((a, b) => a - b).join(', ');
@@ -43,7 +41,7 @@ document.querySelector('#get').addEventListener('click', () => {
         }
     } else if (minInclude || maxInclude) {
         if ((amount > (max - min)) && unique) {
-            alert('Унікальних значень не може бути більше ніж чисел в діапазоні!')
+            showPopup();
         } else {
             if (sort) {
                 results.innerHTML = getNumbers(amount, min, max, unique, minInclude, maxInclude).sort((a, b) => a - b).join(', ');
@@ -53,7 +51,7 @@ document.querySelector('#get').addEventListener('click', () => {
         }
     } else {
         if ((amount > (max - min) - 1) && unique) {
-            alert('Унікальних значень не може бути більше ніж числе в діапазоні!')
+            showPopup();
         } else {
             if (sort) {
                 results.innerHTML = getNumbers(amount, min, max, unique, minInclude, maxInclude).sort((a, b) => a - b).join(', ');
@@ -63,7 +61,6 @@ document.querySelector('#get').addEventListener('click', () => {
         }
     }
 });
-
 
 function getNumbers(amount, min, max, unique, minInclude = true, maxInclude = true) {
     let result = [];
@@ -121,4 +118,23 @@ function getNumbers(amount, min, max, unique, minInclude = true, maxInclude = tr
 
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function showPopup() {
+    let div = document.createElement('div');
+    div.classList.add('popup');
+
+    let p = document.createElement('p');
+    p.textContent = 'Унікальних значень не може бути більше ніж чисел в діапазоні!';
+
+    let button = document.createElement('button');
+    button.classList.add('button');
+    button.textContent = 'OK';
+    button.addEventListener('click', () => {
+        document.querySelector('.popup').remove();
+    });
+
+    div.append(p);
+    p.append(button);
+    document.body.append(div);
 }
